@@ -1,0 +1,13 @@
+:-(700,xfx,is_fract)
+X is_fract Y:-
+    integer(Y),
+    X=Y/1.
+X is_fract Y:-
+    Y=NUM/DEN,
+    DEN/=0,
+    X=Y.
+X is_fract Y:-
+    Y=_/DEN,
+    DEN=0,
+    !,
+    false.    
