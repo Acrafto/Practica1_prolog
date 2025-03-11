@@ -1,4 +1,5 @@
-:-(700,xfx,is_fract)
+%['C:/Users/usuario/Desktop/Practica_prolog_1/Practica1.pl'].
+:-(700,xfx,is_fract).
 X is_fract Y:-
     integer(Y),
     X=Y/1.
@@ -10,4 +11,21 @@ X is_fract Y:-
     Y=_/DEN,
     DEN=0,
     !,
-    false.    
+    false.
+%X is_fract A+B:-
+%    SUM1 is_fract A,
+%    SUM2 is_fract B,
+%    Y is SUM1+SUM2,
+%    X is_fract Y.
+X is_fract A+B:-
+    SUM1 is_fract A,
+    SUM2 is_fract B,
+    SUM1=NUM1/DEN1,
+    SUM2=NUM2/DEN2,
+    gcd(DEN1,DEN2,GCD),
+    MCM is abs(DEN1*DEN2)//GCD,
+    NUM1N is NUM1*(MCM//DEN1),
+    NUM2N is NUM2*(MCM//DEN2),
+    NUM is NUM1N+NUM2N,
+    X is_fract NUM/MCM.
+      
