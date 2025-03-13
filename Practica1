@@ -1,31 +1,80 @@
-%['C:/Users/usuario/Desktop/Practica_prolog_1/Practica1.pl'].
-:-(700,xfx,is_fract).
-X is_fract Y:-
+%['C:/Users/usuario/Desktop/Practica_prolog_1/Practica1'].
+:- op(700,xfx,'is_fract').
+
+gcd(A,0,A).
+
+gcd(A,B,GCD):-
+    B \= 0,
+    R is A mod B,
+    gcd(B,R,GCD).
+
+X is_fract Y:- 
     integer(Y),
     X=Y/1.
-X is_fract Y:-
+
+X is_fract -Y:- 
+    NEG is_fract Y,
+    NEG=NUM/DEN,
+    integer(NUM),
+    integer(DEN),
+    DEN \= 0,
+    N_NUM is -NUM,
+    X is_fract N_NUM/DEN.
+
+X is_fract Y:- 
     Y=NUM/DEN,
-    DEN/=0,
-    X=Y.
-X is_fract Y:-
+    integer(NUM),
+    integer(DEN),
+    DEN \= 0,
+    gcd(NUM,DEN,GCD),
+    NUM_N is NUM // GCD,
+    DEN_N is DEN // GCD,
+    X=NUM_N/DEN_N.
+
+X is_fract Y:- 
     Y=_/DEN,
+    integer(DEN),
     DEN=0,
     !,
     false.
-%X is_fract A+B:-
-%    SUM1 is_fract A,
-%    SUM2 is_fract B,
-%    Y is SUM1+SUM2,
-%    X is_fract Y.
-X is_fract A+B:-
-    SUM1 is_fract A,
-    SUM2 is_fract B,
-    SUM1=NUM1/DEN1,
-    SUM2=NUM2/DEN2,
-    gcd(DEN1,DEN2,GCD),
-    MCM is abs(DEN1*DEN2)//GCD,
-    NUM1N is NUM1*(MCM//DEN1),
-    NUM2N is NUM2*(MCM//DEN2),
-    NUM is NUM1N+NUM2N,
+
+X is_fract A + B:-
+    SUM_1 is_fract A,
+    SUM_2 is_fract B,
+    SUM_1=NUM_1/DEN_1,
+    SUM_2=NUM_2/DEN_2,
+    gcd(DEN_1,DEN_2,GCD),
+    MCM is abs(DEN_1*DEN_2)//GCD,
+    NUM_1N is NUM_1 * (MCM//DEN_1),
+    NUM_2N is NUM_2 * (MCM//DEN_2),
+    NUM is NUM_1N+NUM_2N,
     X is_fract NUM/MCM.
+
+X is_fract A-B:-
+    SUM_1 is_fract A,
+    SUM_2 is_fract B,
+    SUM_1=NUM_1/DEN_1,
+    SUM_2=NUM_2/DEN_2,
+    gcd(DEN_1,DEN_2,GCD),
+    MCM is abs(DEN_1 * DEN_2)//GCD,
+    NUM_1N is NUM_1 * (MCM//DEN_1),
+    NUM_2N is NUM_2 * (MCM//DEN_2),
+    NUM is NUM_1N-NUM_2N,
+    X is_fract NUM/MCM.
+    
+X is_fract A * B:- 
+    A=NUM_1/DEN_1,
+    B=NUM_2/DEN_2,
+    NUM is NUM_1 * NUM_2,
+    DEN is DEN_1 * DEN_2,
+    X is_fract NUM/DEN.
+
+X is_fract A div B:- 
+    Fac_1 is_fract A,
+    Fac_2 is_fract B,
+    Fac_1=NUM_1/DEN_1,
+    Fac_2=NUM_2/DEN_2,
+    NUM is NUM_1 * DEN_2,
+    DEN is DEN_1 * NUM_2,
+    X is_fract NUM/DEN.
       
