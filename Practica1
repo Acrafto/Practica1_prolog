@@ -1,12 +1,45 @@
-%['C:/Users/usuario/Desktop/Practica_prolog_1/Practica1'].
+%['C:/Users/Usuario/Desktop/Practica1.pl'].
+%Lista de ejemplo: [1/2,3/4 - 5, 2, 3/5]
 :- op(700,xfx,'is_fract').
 gcd(A,0,A).
-
 gcd(A,B,GCD):-
     B \= 0,
-    R is A mod B,
-    gcd(B,R,GCD).
+    X is A mod B,
+    gcd(B,X,GCD).
 
+sum([],0/1).
+sum([H|T],X):-
+    sum(T,X_1),
+    X is_fract X_1+H.
+
+max([H|T], X) :-
+    max(T, H, X).
+max([], MAX, MAX).
+max([H|T], MAX_L, X) :-
+    H_F is_fract H,
+    MAX_LF is_fract MAX_L,
+    (H_F > MAX_LF -> MAX_N = H ; MAX_N = MAX_LF),
+    max(T, MAX_N, X).
+
+min([H|T], X) :-
+    min(T, H, X).
+min([], MIN, MIN).
+min([H|T], MIN_L, X) :-
+    H_F is_fract H,
+    MIN_LF is_fract MIN_L,
+    (H_F < MIN_LF -> MIN_N = H ; MIN_N = MIN_LF),
+    min(T, MIN_N, X).
+
+len([],0).
+len([_|T],X):-
+    len(T,X_1),
+    X is X_1+1.
+
+avg(L, X):-
+    sum(L, SUM),
+    len(L, LEN),
+    X is_fract SUM div LEN.
+    
 X is_fract Y:- 
     integer(Y),
     X=Y/1.
@@ -78,4 +111,15 @@ X is_fract A div B:-
     NUM is NUM_1 * DEN_2,
     DEN is DEN_1 * NUM_2,
     X is_fract NUM/DEN.
-      
+
+X is_fract sum(L):-
+    sum(L,X).
+
+X is_fract min(L):-
+    min(L,X).
+
+X is_fract max(L):-
+    max(L,X).
+
+X is_fract avg(L):-
+    avg(L,X).
