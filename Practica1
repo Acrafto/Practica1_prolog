@@ -1,6 +1,5 @@
 %['C:/Users/usuario/Desktop/Practica_prolog_1/Practica1'].
 :- op(700,xfx,'is_fract').
-
 gcd(A,0,A).
 
 gcd(A,B,GCD):-
@@ -63,17 +62,19 @@ X is_fract A-B:-
     X is_fract NUM/MCM.
     
 X is_fract A * B:- 
-    A=NUM_1/DEN_1,
-    B=NUM_2/DEN_2,
+    FAC_1 is_fract A,
+    FAC_2 is_fract B,
+    FAC_1=NUM_1/DEN_1,
+    FAC_2=NUM_2/DEN_2,
     NUM is NUM_1 * NUM_2,
     DEN is DEN_1 * DEN_2,
     X is_fract NUM/DEN.
 
 X is_fract A div B:- 
-    Fac_1 is_fract A,
-    Fac_2 is_fract B,
-    Fac_1=NUM_1/DEN_1,
-    Fac_2=NUM_2/DEN_2,
+    FAC_1 is_fract A,
+    FAC_2 is_fract B,
+    FAC_1=NUM_1/DEN_1,
+    FAC_2=NUM_2/DEN_2,
     NUM is NUM_1 * DEN_2,
     DEN is DEN_1 * NUM_2,
     X is_fract NUM/DEN.
