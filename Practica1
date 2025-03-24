@@ -2,7 +2,7 @@
 %Sebastián David Moreno Expósito; sebastian.exposito@udc.es
 %Xoel Sánchez Dacoba; xoel.sanchez.dacoba@udc.es
 
-:- op(700,xfx,'is_fract').
+:- op(700,xfx,'is_frac').
 gcd(A,0,A).
 gcd(A,B,GCD):-
     B \= 0,
@@ -12,14 +12,14 @@ gcd(A,B,GCD):-
 sum([],0/1).
 sum([H|T],X):-
     sum(T,X_1),
-    X is_fract X_1+H.
+    X is_frac X_1+H.
 
 max([H|T], X) :-
     max(T, H, X).
 max([], MAX, MAX).
 max([H|T], MAX_L, X) :-
-    H_F is_fract H,
-    MAX_LF is_fract MAX_L,
+    H_F is_frac H,
+    MAX_LF is_frac MAX_L,
     (H_F > MAX_LF -> MAX_N = H ; MAX_N = MAX_LF),
     max(T, MAX_N, X).
 
@@ -27,8 +27,8 @@ min([H|T], X) :-
     min(T, H, X).
 min([], MIN, MIN).
 min([H|T], MIN_L, X) :-
-    H_F is_fract H,
-    MIN_LF is_fract MIN_L,
+    H_F is_frac H,
+    MIN_LF is_frac MIN_L,
     (H_F < MIN_LF -> MIN_N = H ; MIN_N = MIN_LF),
     min(T, MIN_N, X).
 
@@ -40,22 +40,23 @@ len([_|T],X):-
 avg(L, X):-
     sum(L, SUM),
     len(L, LEN),
-    X is_fract SUM div LEN.
+    X is_frac SUM div LEN.
     
-X is_fract Y:- 
+X is_frac Y:- 
     integer(Y),
+    !,
     X=Y/1.
 
-X is_fract -Y:- 
-    NEG is_fract Y,
+X is_frac -Y:- 
+    NEG is_frac Y,
     NEG=NUM/DEN,
     integer(NUM),
     integer(DEN),
     DEN \= 0,
     N_NUM is -NUM,
-    X is_fract N_NUM/DEN.
+    X is_frac N_NUM/DEN.
 
-X is_fract Y:- 
+X is_frac Y:- 
     Y=NUM/DEN,
     integer(NUM),
     integer(DEN),
@@ -63,65 +64,56 @@ X is_fract Y:-
     gcd(NUM,DEN,GCD),
     NUM_N is NUM // GCD,
     DEN_N is DEN // GCD,
-    X=NUM_N/DEN_N.
+    S_D is sign(DEN_N),
+    NUM_F is S_D * NUM_N,
+    DEN_F is abs(DEN_N),
+    !,
+    X=NUM_F/DEN_F.
 
-X is_fract Y:- 
+_ is_frac Y:- 
     Y=_/DEN,
     integer(DEN),
     DEN=0,
     !,
     false.
 
-X is_fract A + B:-
-    SUM_1 is_fract A,
-    SUM_2 is_fract B,
+X is_frac A + B:-
+    SUM_1 is_frac A,
+    SUM_2 is_frac B,
     SUM_1=NUM_1/DEN_1,
     SUM_2=NUM_2/DEN_2,
-    gcd(DEN_1,DEN_2,GCD),
-    MCM is abs(DEN_1*DEN_2)//GCD,
-    NUM_1N is NUM_1 * (MCM//DEN_1),
-    NUM_2N is NUM_2 * (MCM//DEN_2),
-    NUM is NUM_1N+NUM_2N,
-    X is_fract NUM/MCM.
+    NUM is (NUM_1* DEN_2) + (NUM_2 * DEN_1),
+    DEN is DEN_1 * DEN_2,
+    X is_frac NUM/DEN.
 
-X is_fract A-B:-
-    SUM_1 is_fract A,
-    SUM_2 is_fract B,
+X is_frac A-B:-
+    SUM_1 is_frac A,
+    SUM_2 is_frac B,
     SUM_1=NUM_1/DEN_1,
     SUM_2=NUM_2/DEN_2,
-    gcd(DEN_1,DEN_2,GCD),
-    MCM is abs(DEN_1 * DEN_2)//GCD,
-    NUM_1N is NUM_1 * (MCM//DEN_1),
-    NUM_2N is NUM_2 * (MCM//DEN_2),
-    NUM is NUM_1N-NUM_2N,
-    X is_fract NUM/MCM.
+    NUM is (NUM_1* DEN_2) - (NUM_2 * DEN_1),
+    DEN is DEN_1 * DEN_2,
+    X is_frac NUM/DEN.
     
-X is_fract A * B:- 
-    FAC_1 is_fract A,
-    FAC_2 is_fract B,
+X is_frac A * B:- 
+    FAC_1 is_frac A,
+    FAC_2 is_frac B,
     FAC_1=NUM_1/DEN_1,
     FAC_2=NUM_2/DEN_2,
     NUM is NUM_1 * NUM_2,
     DEN is DEN_1 * DEN_2,
-    X is_fract NUM/DEN.
+    X is_frac NUM/DEN.
 
-X is_fract A div B:- 
-    FAC_1 is_fract A,
-    FAC_2 is_fract B,
+X is_frac A div B:- 
+    FAC_1 is_frac A,
+    FAC_2 is_frac B,
     FAC_1=NUM_1/DEN_1,
     FAC_2=NUM_2/DEN_2,
     NUM is NUM_1 * DEN_2,
     DEN is DEN_1 * NUM_2,
-    X is_fract NUM/DEN.
+    X is_frac NUM/DEN.
 
-X is_fract sum(L):-
-    sum(L,X).
-
-X is_fract min(L):-
-    min(L,X).
-
-X is_fract max(L):-
-    max(L,X).
-
-X is_fract avg(L):-
-    avg(L,X).
+X is_frac sum(L):-sum(L,X).
+X is_frac min(L):-min(L,X).
+X is_frac max(L):-max(L,X).
+X is_frac avg(L):-avg(L,X).
