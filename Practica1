@@ -1,5 +1,7 @@
-%['C:/Users/Usuario/Desktop/Practica1.pl'].
-%Lista de ejemplo: [1/2,3/4 - 5, 2, 3/5]
+%Authors:
+%Sebastián David Moreno Expósito; sebastian.exposito@udc.es
+%Xoel Sánchez Dacoba; xoel.sanchez.dacoba@udc.es
+
 :- op(700,xfx,'is_fract').
 gcd(A,0,A).
 gcd(A,B,GCD):-
